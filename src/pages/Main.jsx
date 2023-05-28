@@ -92,7 +92,7 @@ const Main = () => {
                       alt={car.modelName}
                     />
                     <CardContent sx={{ textAlign: "center" }}>
-                      <Typography variant="h6" component="div" gutterBottom>
+                      <Typography variant="h6" component="div"  sx={{ whiteSpace: "nowrap" }}gutterBottom>
                         {car.modelName}
                       </Typography>
 

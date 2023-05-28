@@ -188,7 +188,7 @@ function Navbar({ isMain }) {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <MenuItem onClick={handleProfile}>
-            <Avatar /> My account
+            <Avatar /> My Posted Cars
           </MenuItem>
           <MenuItem onClick={handleLogout}>
             <ListItemIcon>

@@ -11,8 +11,11 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { base_url } from "../utils/base_url";
+import { InventoryAction, InventorySearchAction } from "../redux/InventoryCars/InventoryAction";
+import { useDispatch, useSelector } from "react-redux";
 
-const CarCard = ({ car }) => {
+
+const CarCard = ({ car, setIsDelete }) => {
   const [formData, setFormData] = useState({
     modelName: car.modelName,
     image: car.image,
@@ -26,6 +29,8 @@ const CarCard = ({ car }) => {
     originalPaint: car.originalPaint,
     model: car.model._id,
   });
+  const dispatch=useDispatch();
+  const inventoryCars= useSelector(state=>state.inventoryCars.inventoryCars)
   const [isEdited, setIsEdited] = useState(false);
 
   const handleInputChange = (e) => {
@@ -41,23 +46,28 @@ const CarCard = ({ car }) => {
   };
 
   const handleEditChanges = () => {
-   
     axios
       .put(`${base_url}/api/v1/inventory/updateCar/${car._id}`, formData)
       .then((res) => {
         console.log(res.data.message);
+        dispatch(InventoryAction(res.data.updatedCar))
+        dispatch(InventorySearchAction(res.data.updatedCar))
       })
       .catch((err) => console.log(err));
     setIsEdited(false);
   };
 
   const deleteHandler = () => {
+    setIsDelete(true);
     axios
-    .put(`${base_url}/api/v1/inventory/deleteUser/${car._id}`)
-    .then((res) => {
-      console.log(res.data.message);
-    })
-    .catch((err) => console.log(err));
+      .delete(`${base_url}/api/v1/inventory/deleteUser/${car._id}`)
+      .then((res) => {
+        console.log(res.data.message);
+        const newInventoryCars=inventoryCars.filter(inv_car=>inv_car._id!==car._id)
+        dispatch(InventoryAction(newInventoryCars))
+        dispatch(InventorySearchAction(newInventoryCars))
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <Box sx={{ mb: 2 }}>
@@ -82,10 +92,11 @@ const CarCard = ({ car }) => {
               variant="contained"
               disabled={!isEdited}
               onClick={handleEditChanges}
+              sx={{width:"10vw",backgroundColor: isEdited ? '#58c7c2' : undefined}}
             >
               Edit
             </Button>
-            <Button onClick={deleteHandler}>Delete</Button>
+            <Button variant="contained" onClick={deleteHandler} sx={{width:"10vw",bgcolor:"#58c7c2",color:"#FFF"}}>Delete</Button>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6} md={8}>

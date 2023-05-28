@@ -8,13 +8,14 @@ import {
   Button,
   Alert,
 } from "@mui/material";
-import { base_url } from '../utils/base_url';
-import axios from "axios"
+import { base_url } from "../utils/base_url";
+import axios from "axios";
 import carPoster from "../images/carPoster.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { checkFormData } from "../utils/LoginValidator"
+import { checkFormData } from "../utils/LoginValidator";
 import { useDispatch } from "react-redux";
 import { userActions } from "../redux/User/UserAction";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Login = () => {
   const [err, setErr] = useState(false);
   const [errorVal, setErrorVal] = useState("");
   const [severity, setSeverity] = useState("error");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     if (location.state) {
       setErr(location.state);
@@ -61,12 +62,12 @@ const Login = () => {
               email: "",
               password: "",
             });
-            // Cookies.set("token", response.data.token);
-            // Cookies.set("refresh-token", response.data.refresh_token);
-            // Cookies.set("status", "Y");
-            // Cookies.set("isLoggedIn","true")
-            // Cookies.set("user",JSON.stringify(response.data.user))
-             dispatch(userActions(response.data.user));
+            Cookies.set("token", response.data.token);
+            Cookies.set("refresh-token", response.data.refresh_token);
+            Cookies.set("status", "Y");
+            Cookies.set("isLoggedIn", "true");
+            Cookies.set("user", JSON.stringify(response.data.user));
+            dispatch(userActions(response.data.user));
             navigate("/", { replace: true });
           })
           .catch((error) => {
@@ -74,9 +75,9 @@ const Login = () => {
             setErrorVal(error.response.data.message);
             setSeverity("error");
           });
-    } catch (e) {
-      console.log(e.message);
-    }
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   };
 

@@ -17,10 +17,7 @@ import { useLocation } from "react-router-dom";
 
 const CarDetails = () => {
   const location = useLocation();
-  const car=location.state;
-  
-
-  
+  const car = location.state;
 
   return (
     <>
@@ -110,7 +107,8 @@ const CarDetails = () => {
                     }}
                   >
                     <Typography variant="body2">
-                      <strong>Major Scratches:</strong> {car.majorScratches?<>Yes</>:<>No</>}
+                      <strong>Major Scratches:</strong>{" "}
+                      {car.majorScratches ? <>Yes</> : <>No</>}
                     </Typography>
                   </Box>
                 </Grid>
@@ -126,7 +124,8 @@ const CarDetails = () => {
                     }}
                   >
                     <Typography variant="body2">
-                      <strong>Original Paint:</strong> {car.originalPaint?<>Yes</>:<>No</>}
+                      <strong>Original Paint:</strong>{" "}
+                      {car.originalPaint ? <>Yes</> : <>No</>}
                     </Typography>
                   </Box>
                 </Grid>
@@ -142,7 +141,8 @@ const CarDetails = () => {
                     }}
                   >
                     <Typography variant="body2">
-                      <strong>Registration Place:</strong> {car.registrationPlace}
+                      <strong>Registration Place:</strong>{" "}
+                      {car.registrationPlace}
                     </Typography>
                   </Box>
                 </Grid>
@@ -158,7 +158,8 @@ const CarDetails = () => {
                     }}
                   >
                     <Typography variant="body2">
-                      <strong>Number of previous buyers:</strong> {car.previousBuyers}
+                      <strong>Number of previous buyers:</strong>{" "}
+                      {car.previousBuyers}
                     </Typography>
                   </Box>
                 </Grid>
@@ -175,7 +176,8 @@ const CarDetails = () => {
                     }}
                   >
                     <Typography variant="body2">
-                      <strong>Number of accidents reported:</strong> {car.accidentsReported}
+                      <strong>Number of accidents reported:</strong>{" "}
+                      {car.accidentsReported}
                     </Typography>
                   </Box>
                 </Grid>
@@ -259,7 +261,7 @@ const CarDetails = () => {
                     <TableCell sx={{ color: "#567189", textAlign: "center" }}>
                       Mileage
                     </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
+                    <TableCell sx={{color: "#567189", textAlign: "center" }}>
                       {car.model.mileage}
                     </TableCell>
                   </TableRow>

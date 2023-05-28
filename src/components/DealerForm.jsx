@@ -19,8 +19,12 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { spacing } from "@mui/system";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  InventoryAction,
+  InventorySearchAction,
+} from "../redux/InventoryCars/InventoryAction";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -33,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 const DealerForm = () => {
   const user = useSelector((state) => state.user.user);
+  const inventoryCars = useSelector(
+    (state) => state.inventoryCars.inventoryCars
+  );
   const [colors, setColors] = useState([]);
   const classes = useStyles();
   const [oemCarNames, setOemCarNames] = useState([]);
@@ -41,6 +48,7 @@ const DealerForm = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
   const [carSpecs, setCarSpecs] = useState({});
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     modelName: "",
     image: "",
@@ -110,21 +118,10 @@ const DealerForm = () => {
       .post(`${base_url}/api/v1/inventory/postCars`, formData)
       .then((res) => {
         setSpecs(false);
+        inventoryCars.push(formData);
+        dispatch(InventoryAction(inventoryCars));
+        dispatch(InventorySearchAction(inventoryCars));
         navigate("/");
-        // setFormData({
-        //   modelName: "",
-        //   image: "",
-        //   description: "",
-        //   odometerKMs: "",
-        //   accidentsReported: "",
-        //   previousBuyers: "",
-        //   registrationPlace: "",
-        //   color: "",
-        //   majorScratches: false,
-        //   originalPaint: true,
-        //   model: "",
-        //   postedBy: "",
-        // });
       });
   };
 

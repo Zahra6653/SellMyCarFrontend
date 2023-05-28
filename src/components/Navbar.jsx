@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Button,
@@ -7,25 +6,66 @@ import {
   Toolbar,
   Typography,
   Box,
-  InputBase,
   Avatar,
   Menu,
   MenuItem,
   ListItemIcon,
+  TextField,
 } from "@mui/material";
-
 import SearchIcon from "@mui/icons-material/Search";
 import NoCrashSharpIcon from "@mui/icons-material/NoCrashSharp";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { InventorySearchAction } from "../redux/InventoryCars/InventoryAction";
+import Cookies from "js-cookie";
 
 function Navbar({ isMain }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [letter, setLetter] = useState("U");
-
+  const inventoryCars = useSelector(
+    (state) => state.inventoryCars.inventoryCars
+  );
+  const [flag, setFlag] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState(null);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if(flag){
+        search(searchTerm);
+      }
+     
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, flag]);
+
+  const search = (query) => {
+    const result = inventoryCars?.filter(
+      (car) =>
+        car.modelName.toLowerCase().includes(query.toLowerCase()) ||
+        car.model.mileage == query ||
+        car.color.toLowerCase().includes(query.toLowerCase()) ||
+        car.model.price == query
+    );
+    setSearchResults(result);
+    dispatch(InventorySearchAction(result));
+  };
+
+  const handleSearchChange = (e) => {
+    setFlag(true);
+    if (e.target.value == "") {
+      setFlag(false)
+      dispatch(InventorySearchAction(inventoryCars));
+    } else {
+      setSearchTerm(e.target.value);
+    }
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,75 +77,53 @@ function Navbar({ isMain }) {
 
   const handleProfile = () => {
     handleClose();
-     navigate('/dealersProfile');
+    navigate("/dealersProfile");
   };
 
   const handleLogout = () => {
     handleClose();
+    Cookies.remove('token')
+    Cookies.remove('refresh-token')
+    Cookies.remove('status')
+    Cookies.remove('isLoggedIn')
+    Cookies.remove('user')
     navigate("/login", { replace: true });
   };
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: "20ch",
-      },
-    },
-  }));
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "20vw",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
   return (
     <AppBar position="static" sx={{ bgcolor: "#58c7c2" }}>
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo" onClick={()=>navigate("/")}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="logo"
+          onClick={() => navigate("/")}
+        >
           <NoCrashSharpIcon />
         </IconButton>
         <Typography variant="h6" component="div" width={"10vw"}>
           SellMyCar
         </Typography>
         {isMain && (
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search cars..."
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <TextField
+            placeholder="Search cars..."
+            size="small"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <SearchIcon style={{ marginRight: 8, color: "gray" }} />
+              ),
+              onChange: handleSearchChange,
+              inputProps: { "aria-label": "search" },
+            }}
+          />
         )}
 
         <Box sx={{ flexGrow: 1 }} />
         {isMain && (
-          <Button onClick={()=>navigate("/form")}
+          <Button
+            onClick={() => navigate("/form")}
             sx={{
               color: "white",
               bgcolor: "#58c7c2",

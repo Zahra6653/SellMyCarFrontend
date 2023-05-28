@@ -11,7 +11,7 @@ import {
   Popover,
   Paper,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+
 import { base_url } from "../utils/base_url";
 import carBack from "../images/carBack.png";
 import Footer from "./Footer";
@@ -25,22 +25,12 @@ import {
   InventorySearchAction,
 } from "../redux/InventoryCars/InventoryAction";
 
-const useStyles = makeStyles((theme) => ({
-  popover: {
-    pointerEvents: "none",
-  },
-  paper: {
-    padding: spacing(2),
-  },
-}));
-
 const DealerForm = () => {
   const user = useSelector((state) => state.user.user);
   const inventoryCars = useSelector(
     (state) => state.inventoryCars.inventoryCars
   );
   const [colors, setColors] = useState([]);
-  const classes = useStyles();
   const [oemCarNames, setOemCarNames] = useState([]);
   const [specs, setSpecs] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
@@ -353,7 +343,6 @@ const DealerForm = () => {
       >
         <Box sx={{ p: 5, bgcolor: "#58c7c2", textAlign: "center" }}>
           <Paper
-            className={classes.paper}
             sx={{
               p: 3,
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",

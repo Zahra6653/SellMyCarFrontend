@@ -12,6 +12,7 @@ import {
   ListItemIcon,
   TextField,
 } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
 import NoCrashSharpIcon from "@mui/icons-material/NoCrashSharp";
 import Tooltip from "@mui/material/Tooltip";
@@ -23,7 +24,6 @@ import Cookies from "js-cookie";
 
 function Navbar({ isMain }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [letter, setLetter] = useState("U");
   const inventoryCars = useSelector(
     (state) => state.inventoryCars.inventoryCars
   );
@@ -36,12 +36,10 @@ function Navbar({ isMain }) {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if(flag){
+      if (flag) {
         search(searchTerm);
       }
-     
     }, 1000);
-
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, flag]);
 
@@ -60,7 +58,7 @@ function Navbar({ isMain }) {
   const handleSearchChange = (e) => {
     setFlag(true);
     if (e.target.value == "") {
-      setFlag(false)
+      setFlag(false);
       dispatch(InventorySearchAction(inventoryCars));
     } else {
       setSearchTerm(e.target.value);
@@ -82,11 +80,11 @@ function Navbar({ isMain }) {
 
   const handleLogout = () => {
     handleClose();
-    Cookies.remove('token')
-    Cookies.remove('refresh-token')
-    Cookies.remove('status')
-    Cookies.remove('isLoggedIn')
-    Cookies.remove('user')
+    Cookies.remove("token");
+    Cookies.remove("refresh-token");
+    Cookies.remove("status");
+    Cookies.remove("isLoggedIn");
+    Cookies.remove("user");
     navigate("/login", { replace: true });
   };
 
@@ -112,10 +110,14 @@ function Navbar({ isMain }) {
             variant="outlined"
             InputProps={{
               startAdornment: (
-                <SearchIcon style={{ marginRight: 8, color: "gray" }} />
+                <SearchIcon style={{ marginRight: 8, color: "white" }} />
               ),
+
               onChange: handleSearchChange,
-              inputProps: { "aria-label": "search" },
+              inputProps: {
+                "aria-label": "search",
+                style: { color: "white" },
+              },
             }}
           />
         )}
@@ -144,7 +146,9 @@ function Navbar({ isMain }) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>{letter}</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              <PersonIcon />
+            </Avatar>
           </IconButton>
         </Tooltip>
 

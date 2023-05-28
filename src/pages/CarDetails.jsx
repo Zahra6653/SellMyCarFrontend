@@ -261,7 +261,7 @@ const CarDetails = () => {
                     <TableCell sx={{ color: "#567189", textAlign: "center" }}>
                       Mileage
                     </TableCell>
-                    <TableCell sx={{color: "#567189", textAlign: "center" }}>
+                    <TableCell sx={{ color: "#567189", textAlign: "center" }}>
                       {car.model.mileage}
                     </TableCell>
                   </TableRow>

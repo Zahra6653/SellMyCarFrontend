@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   MenuItem,
   Checkbox,
-  Container,
   Link,
   Popover,
   Paper,
@@ -121,7 +120,8 @@ const DealerForm = () => {
         inventoryCars.push(formData);
         dispatch(InventoryAction(inventoryCars));
         dispatch(InventorySearchAction(inventoryCars));
-        navigate("/");
+
+        navigate("/", { state: true });
       });
   };
 
@@ -176,7 +176,6 @@ const DealerForm = () => {
                   {car.modelName} {car.yearOfModel}
                 </MenuItem>
               ))}
-              {/* <MenuItem value="Model 1">Model 1</MenuItem> */}
             </TextField>
             {specs && (
               <Link

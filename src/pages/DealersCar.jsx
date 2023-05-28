@@ -13,12 +13,10 @@ const DealersCar = () => {
   const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
-    console.log(user);
     setIsDelete(false);
     axios
       .get(`${base_url}/api/v1/inventory/postedCarByUser/${user._id}`)
       .then((res) => {
-        console.log(res.data);
         setCars(res.data.cars);
       })
       .catch((err) => console.log(err));
@@ -27,8 +25,8 @@ const DealersCar = () => {
     <>
       <Navbar isMain={false} />
       <Box sx={{ minHeight: "85vh" }}>
-        {cars.map((car) => (
-          <CarCard car={car} setIsDelete={setIsDelete} />
+        {cars.map((car, index) => (
+          <CarCard car={car} key={index} setIsDelete={setIsDelete} />
         ))}
       </Box>
       <Footer />

@@ -32,6 +32,7 @@ const Login = () => {
   const [errorVal, setErrorVal] = useState("");
   const [severity, setSeverity] = useState("error");
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (location.state) {
       setErr(location.state);

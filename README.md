@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+# Sell My Car Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Sell My Car application is a platform designed for dealers to sell their cars based on the provided specifications. It offers a range of features to facilitate the car selling process.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **User Authentication**: Users can register and log in using their email and password.
+- **Sign Up**: New users can create an account by providing their first name, last name, email, and password.
+- **Form Validation**: All required fields are validated to ensure they are not left empty.
+- **Login with Cookies**: User login is handled using cookies. User details are saved in cookies, including a refresh token and access token.
+- **Token-based Authentication**: The application uses tokens for secure authentication and authorization.
+- **Token Refresh**: When the access token expires, the refresh token is used to obtain a new access token.
+- **Main Dashboard**: After successful login, users are redirected to the main dashboard page.
+- **Car Listings**: The dashboard displays car listings posted by dealers, including images and specifications.
+- **View Car Details**: Users can click on a car listing to view its detailed information and specifications.
+- **Sell Car**: Users can sell their cars by filling out a form with the model name, image, description, and other details.
+- **Edit Car Details**: Users have the ability to edit the details of their posted cars, such as description, mileage, color, and more.
+- **Delete Car Listing**: Users can delete their posted car listings if they no longer wish to sell them.
+- **Search and Filter**: The dashboard includes a search bar and filters to search for cars based on color, model name, mileage, and price range.
+- **Account Settings**: Users can manage their account settings.
+- **Error Handling**: Proper error handling and validation messages are displayed to users for a seamless user experience.
+- **Responsive Design**: The application is designed to be responsive and accessible on different devices and screen sizes.
+- **User-Friendly Interface**: The application is designed with a user-friendly interface to enhance the user experience and make navigation intuitive.
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+To get started with the Sell My Car application you can access the hosted version of the application at [https://sell-my-car-frontend-bpgx.vercel.app/](https://sell-my-car-frontend-bpgx.vercel.app/).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- Front-end: React, Material-UI,Redux
+- Back-end: Node.js, Express.js,Mongoose
+- Database: MongoDB
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

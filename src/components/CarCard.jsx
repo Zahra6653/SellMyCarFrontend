@@ -7,10 +7,12 @@ import {
   MenuItem,
   TextField,
   Typography,
+  IconButton,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { base_url } from "../utils/base_url";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import {
   InventoryAction,
   InventorySearchAction,
@@ -18,29 +20,46 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import AlertComponent from "./AlertComponent";
 
-const CarCard = ({ car, setIsDelete }) => {
+const CarCard = ({ car, setIsDelete, carId }) => {
   const [formData, setFormData] = useState({
     modelName: car.modelName,
-    image: car.image,
     description: car.description,
     odometerKMs: car.odometerKMs,
     accidentsReported: car.accidentsReported,
     previousBuyers: car.previousBuyers,
     registrationPlace: car.registrationPlace,
+    image: car.image,
     color: car.color,
     majorScratches: car.majorScratches,
     originalPaint: car.originalPaint,
     model: car.model._id,
   });
+  const [isEdited, setIsEdited] = useState(false);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const inventoryCars = useSelector(
     (state) => state.inventoryCars.inventoryCars
   );
-  const [isEdited, setIsEdited] = useState(false);
   const [alert, showAlert] = useState(false);
 
+  const handleProfilePictureChange = (pics) => {
+    const data = new FormData();
+    data.append("file", pics);
+    data.append("upload_preset", "qandaizb");
+    data.append("cloud_name", "divpq1r3o");
+    fetch("https://api.cloudinary.com/v1_1/divpq1r3o/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsEdited(true);
+        setFormData({ ...formData, image: data.url.toString() });
+      });
+  };
+
   const handleInputChange = (e) => {
+    console.log(formData);
     if (
       e.target.name === "majorScratches" ||
       e.target.name === "originalPaint"
@@ -53,12 +72,13 @@ const CarCard = ({ car, setIsDelete }) => {
   };
 
   const handleEditChanges = () => {
-    showAlert(false)
+    showAlert(false);
     axios
       .put(`${base_url}/api/v1/inventory/updateCar/${car._id}`, formData)
       .then((res) => {
         dispatch(InventoryAction(res.data.updatedCar));
         dispatch(InventorySearchAction(res.data.updatedCar));
+        localStorage.setItem("myCarsData", JSON.stringify(res.data.updatedCar));
         setMessage("Car details Updated Sucesfully");
         showAlert(true);
       })
@@ -67,7 +87,7 @@ const CarCard = ({ car, setIsDelete }) => {
   };
 
   const deleteHandler = () => {
-    showAlert(false)
+    showAlert(false);
     setIsDelete(true);
     axios
       .delete(`${base_url}/api/v1/inventory/deleteUser/${car._id}`)
@@ -77,6 +97,7 @@ const CarCard = ({ car, setIsDelete }) => {
         );
         dispatch(InventoryAction(newInventoryCars));
         dispatch(InventorySearchAction(newInventoryCars));
+        localStorage.setItem("myCarsData", JSON.stringify(newInventoryCars));
         setMessage("Car deleted Sucesfully");
         showAlert(true);
       })
@@ -94,7 +115,47 @@ const CarCard = ({ car, setIsDelete }) => {
         sx={{ mt: 2, p: 5, backgroundColor: "#f5f5f5" }}
       >
         <Grid item xs={12} sm={6} md={4}>
-          <img src={car.image} alt={car.modelName} width="100%" height="auto" />
+          <Box
+            sx={{
+              position: "relative",
+              display: "inline-block",
+              width: "100%",
+              height: "auto",
+            }}
+          >
+            <img
+              src={formData.image}
+              alt={car.modelName}
+              width="100%"
+              height="auto"
+            />
+            <label htmlFor="profile-picture-upload">
+              <input
+                type="file"
+                id="profile-picture-upload"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  if (!e.target.files[0]) return;
+                  handleProfilePictureChange(e.target.files[0]);
+                }}
+              />
+
+              <IconButton
+                component="span"
+                sx={{
+                  position: "absolute",
+                  top: "15%",
+                  left: "90%",
+                  transform: "translate(-50%, -50%)",
+                  bgcolor: "white",
+                }}
+              >
+                <PhotoCameraIcon />
+              </IconButton>
+            </label>
+          </Box>
+
           <Grid
             item
             sx={{

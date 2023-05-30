@@ -10,8 +10,12 @@ import {
   Link,
   Popover,
   Paper,
+  InputAdornment,
+  FormControl,
+  FormHelperText,
 } from "@mui/material";
 
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { base_url } from "../utils/base_url";
 import carBack from "../images/carBack.png";
 import Footer from "./Footer";
@@ -37,6 +41,7 @@ const DealerForm = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
   const [carSpecs, setCarSpecs] = useState({});
+  const [imageFile, setImageFile] = useState("");
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     modelName: "",
@@ -88,6 +93,21 @@ const DealerForm = () => {
     }
   };
 
+  const handleProfilePictureChange = (pics) => {
+    const data = new FormData();
+    data.append("file", pics);
+    data.append("upload_preset", "qandaizb");
+    data.append("cloud_name", "divpq1r3o");
+    fetch("https://api.cloudinary.com/v1_1/divpq1r3o/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setFormData({ ...formData, image: data.url.toString() });
+      });
+  };
   const handlePopoverOpen = (event) => {
     setPopoverAnchorEl(event.currentTarget);
     setIsPopoverOpen(true);
@@ -108,9 +128,10 @@ const DealerForm = () => {
       .then((res) => {
         setSpecs(false);
         inventoryCars.push(formData);
+        console.log(res.data.car)
         dispatch(InventoryAction(inventoryCars));
         dispatch(InventorySearchAction(inventoryCars));
-
+        localStorage.setItem("myCarsData", JSON.stringify(res.data.car));
         navigate("/", { state: true });
       });
   };
@@ -168,24 +189,50 @@ const DealerForm = () => {
               ))}
             </TextField>
             {specs && (
-              <Link
-                component="button"
-                variant="body2"
-                onClick={handlePopoverOpen}
-                sx={{ cursor: "pointer", color: "blue", paddingLeft: "25vw" }}
-              >
-                OEM Specifications
-              </Link>
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={handlePopoverOpen}
+                  sx={{ cursor: "pointer", color: "blue" }}
+                >
+                  OEM Specifications
+                </Link>
+              </Box>
             )}
-            <TextField
-              label="Model Image"
-              name="image"
-              value={formData.image}
-              onChange={inputChangeHandler}
-              fullWidth
-              margin="normal"
-              required
-            />
+            <FormControl>
+              <FormHelperText>
+                <label htmlFor="image-upload">
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      if (!e.target.files[0]) {
+                        return;
+                      }
+                      setImageFile(e.target.files[0]);
+                      handleProfilePictureChange(e.target.files[0]);
+                    }}
+                    required
+                  />
+                  <Button
+                    variant="contained"
+                    component="span"
+                    endIcon={<AttachFileIcon />}
+                    sx={{
+                      bgcolor: "#58c7c2",
+                      "&:hover": {
+                        bgcolor: "#449b98",
+                      },
+                    }}
+                  >
+                    {imageFile ? imageFile.name : "Upload Image of the Car"}
+                  </Button>
+                </label>
+              </FormHelperText>
+            </FormControl>
 
             <TextField
               label="Model Description"
